@@ -2,10 +2,43 @@
 // escondemos a Gamepad API das páginas para o comando não chegar duplicado.
 (() => {
   try {
-    if (!window.__sofaNativeGamepad) Object.defineProperty(Navigator.prototype, 'getGamepads', {
-      value: () => [null, null, null, null],
-      configurable: true
-    });
+    if (!window.__sofaNativeGamepad) {
+      Object.defineProperty(Navigator.prototype, 'getGamepads', {
+        value: () => [null, null, null, null],
+        configurable: true
+      });
+    } else {
+      // Jogos na nuvem: o Sofá entrega o DualSense como um controle padrão (via CDP).
+      // Controles Xbox (XInput) continuam chegando direto pelo navegador.
+      const orig = Navigator.prototype.getGamepads;
+      let virt = null;
+      const make = () => ({
+        id: 'Sofa DualSense (STANDARD GAMEPAD Vendor: 054c)', index: 0, connected: true, mapping: 'standard',
+        timestamp: performance.now(), axes: [0, 0, 0, 0],
+        buttons: Array.from({ length: 17 }, () => ({ pressed: false, touched: false, value: 0 })),
+        vibrationActuator: null, hapticActuators: []
+      });
+      window.__sofaPad = (s) => {
+        const first = !virt;
+        if (first) virt = make();
+        s.buttons.forEach((v, i) => { const bt = virt.buttons[i]; bt.value = v; bt.pressed = v > 0.12; bt.touched = v > 0; });
+        virt.axes = s.axes;
+        virt.timestamp = performance.now();
+        if (first) { const e = new Event('gamepadconnected'); e.gamepad = virt; window.dispatchEvent(e); }
+      };
+      Object.defineProperty(Navigator.prototype, 'getGamepads', {
+        value: function () {
+          // o DualSense "de verdade" (se o navegador o enxergar) sai da lista para não duplicar
+          const real = [...orig.call(this)].filter((g) => g && !/054c|dualsense|wireless controller/i.test(g.id));
+          const out = [null, null, null, null];
+          let i = 0;
+          if (virt) out[i++] = virt;
+          for (const g of real) if (i < 4) out[i++] = g;
+          return out;
+        },
+        configurable: true
+      });
+    }
   } catch {}
   // Proporção do vídeo para telas ultrawide (21:9):
   //   Original  -> 16:9 inteiro (com modo ambiente nas laterais onde o DRM permite)

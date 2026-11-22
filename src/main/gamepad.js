@@ -160,12 +160,34 @@ class Gamepad extends EventEmitter {
     if (fullReport && b2 & 0x04) buttons |= MIC;
     if (fullReport) this.touch(pad, buf, o);
 
+    const now = Date.now();
+    this.passthrough(pad, buttons, l2, r2, lx, ly, rx, ry, now);
     this.handle(pad, {
       wButtons: buttons,
       bLeftTrigger: l2, bRightTrigger: r2,
       sThumbLX: (lx - 128) * 256, sThumbLY: (128 - ly) * 256,
       sThumbRX: (rx - 128) * 256, sThumbRY: (128 - ry) * 256
-    }, Date.now());
+    }, now);
+  }
+
+  // Estado bruto no formato "standard" da Gamepad API, para jogos na nuvem.
+  // O DualSense no modo completo (Bluetooth) não é entendido pelo navegador,
+  // então o Sofá entrega o controle para a página. Só envia quando muda (ou a cada 100 ms).
+  passthrough(pad, buttons, l2, r2, lx, ly, rx, ry, now) {
+    const has = (m) => (buttons & m ? 1 : 0);
+    const b = [
+      has(B.A), has(B.B), has(B.X), has(B.Y), has(B.LB), has(B.RB),
+      +(l2 / 255).toFixed(3), +(r2 / 255).toFixed(3),
+      has(B.BACK), has(B.START), has(B.L3), has(B.R3),
+      has(B.UP), has(B.DOWN), has(B.LEFT), has(B.RIGHT), has(B.GUIDE)
+    ];
+    const axis = (v) => { const a = (v - 128) / 127.5; return Math.abs(a) < 0.06 ? 0 : +Math.max(-1, Math.min(1, a)).toFixed(3); };
+    const a = [axis(lx), axis(ly), axis(rx), axis(ry)];
+    const key = b.join() + '|' + a.join();
+    if (key === pad.ptKey && now - (pad.ptAt || 0) < 100) return;
+    pad.ptKey = key;
+    pad.ptAt = now;
+    this.emit('state', { buttons: b, axes: a });
   }
 
   poll() {

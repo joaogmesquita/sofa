@@ -112,6 +112,15 @@ class Edge extends EventEmitter {
     this.emit('closed');
   }
 
+  // repassa o estado do controle para a página (jogos na nuvem); descarta se o anterior ainda não chegou
+  pushPad(state) {
+    if (!this.client || this.padInflight) return;
+    this.padInflight = true;
+    this.client.Runtime.evaluate({ expression: `window.__sofaPad && __sofaPad(${JSON.stringify(state)})` })
+      .catch(() => {})
+      .finally(() => { this.padInflight = false; });
+  }
+
   async navigate(url) {
     const c = await this.ensureClient();
     await c.Page.navigate({ url });

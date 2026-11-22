@@ -264,6 +264,9 @@ app.whenReady().then(async () => {
     route(a);
   });
   gamepad.on('status', (n) => pushStatus({ gamepads: n }));
+  gamepad.on('state', (st) => {
+    if (edge.active && edge.service?.gamepad === 'native') edge.pushPad(st);
+  });
   gamepad.start();
 
   remote.on('action', route);
