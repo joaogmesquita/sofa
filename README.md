@@ -8,7 +8,8 @@ Transforma o PC com Windows numa **smart TV**: um launcher em tela cheia, no est
 - **Streaming com DRM** em alta resolução: os serviços abrem no Microsoft Edge (PlayReady), controlado via Chrome DevTools Protocol.
 - **YouTube na interface oficial de TV** (`youtube.com/tv`), até **4K60 em VP9**.
 - **Controles**: Xbox (XInput) e **DualSense / DualShock 4 direto via HID** (USB e Bluetooth, sem Steam nem DS4Windows).
-  - L2/R2 = volume sensível à pressão; deslizar no touchpad = volume; △ = proporção; botão do microfone = voz; PS = início.
+  - Analógico esquerdo/direcional = navegar; analógico direito = rolar a página; touchpad = mouse (um dedo move, dois dedos rolam, clique = clique).
+  - L2/R2 = volume sensível à pressão; △ = proporção; botão do microfone = voz; PS = início.
 - **Controle pelo celular**: PWA na rede local (escaneie o QR code do launcher), com direcional, mídia, touchpad, teclado e lista de apps.
 - **Transmitir pelo app do YouTube**: receptor DIAL, e o PC aparece como "Sofá (PC)" no botão de transmitir.
 - **Comandos de voz em português** com Whisper local, sem enviar áudio para a nuvem: "abrir Netflix", "procurar Round 6 na Netflix", "pausar", "aumentar volume".

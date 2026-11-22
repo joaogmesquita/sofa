@@ -12,6 +12,8 @@ const RemoteServer = require('./remote-server');
 const Dial = require('./dial');
 const { lanIp } = require('./net');
 const { Voice, parse } = require('./voice');
+const { Recents, SNAPSHOT } = require('./recents');
+const Icons = require('./icons');
 
 const REMOTE_PORT = 8787;
 const DIAL_PORT = 56790;
@@ -24,6 +26,8 @@ let overlay;
 let voiceState = 'idle'; // idle | listening | thinking
 let hideTimer;
 const voice = new Voice();
+const recents = new Recents(app.getPath('userData'));
+const icons = new Icons(app.getPath('userData'));
 const ip = lanIp();
 const edge = new Edge(path.join(app.getPath('userData'), 'edge-profile'));
 const gamepad = new Gamepad();
@@ -46,11 +50,21 @@ function showLauncher() {
   setTimeout(() => win.setAlwaysOnTop(false), 400);
 }
 
+// registra o que está tocando no serviço aberto ("Continuar assistindo")
+async function snapshot() {
+  if (!edge.active || !edge.service) return;
+  try {
+    const snap = await edge.eval(SNAPSHOT);
+    if (await recents.record(edge.service, snap)) win?.webContents.send('recents', recents.list());
+  } catch {}
+}
+
 async function launch(id, urlOverride) {
   const s = services.find((x) => x.id === id);
   if (!s) return;
   const svc = urlOverride ? { ...s, url: urlOverride } : s;
   if (edge.active && edge.service?.id === id && urlOverride) return edge.navigate(urlOverride);
+  if (edge.active) await snapshot();
   await edge.launch(svc);
 }
 
@@ -58,7 +72,10 @@ async function route(action) {
   try {
     switch (action.type) {
       case 'home':
-        if (edge.active) await edge.close();
+        if (edge.active) {
+          await snapshot();
+          await edge.close();
+        }
         return showLauncher();
       case 'launch':
         return launch(action.id, action.url);
@@ -80,6 +97,8 @@ async function route(action) {
         return osInput.click(action.button);
       case 'scroll':
         return osInput.scroll(action.amount);
+      case 'hscroll':
+        return osInput.hscroll(action.amount);
     }
     if (edge.active) return await edge.handle(action);
     win?.webContents.send('action', action);
@@ -201,7 +220,7 @@ function createWindow() {
 ipcMain.handle('services', async () => {
   const jellyfinUp = await checkUrl('http://localhost:8096/health');
   return services.map(({ id, name, hint, color }) => ({
-    id, name, color,
+    id, name, color, icon: icons.get(id),
     hint: id === 'jellyfin' && !jellyfinUp ? 'Servidor não instalado' : hint,
     disabled: id === 'jellyfin' && !jellyfinUp
   }));
@@ -209,6 +228,12 @@ ipcMain.handle('services', async () => {
 ipcMain.handle('status', async () => ({ ...status, qr: await QRCode.toDataURL(status.remoteUrl, { margin: 1, width: 360 }) }));
 ipcMain.on('action', (_e, action) => route(action));
 ipcMain.on('quit', () => app.quit());
+ipcMain.handle('recents', () => recents.list());
+ipcMain.on('recent-remove', (_e, key) => {
+  recents.remove(key);
+  win?.webContents.send('recents', recents.list());
+});
+setInterval(snapshot, 20000);
 
 app.whenReady().then(async () => {
   // microfone liberado só para as janelas locais do Sofá
@@ -216,6 +241,7 @@ app.whenReady().then(async () => {
   session.defaultSession.setPermissionCheckHandler((wc, perm) => perm === 'media' && !!wc && wc.getURL().startsWith('file://'));
   createWindow();
   createOverlay();
+  icons.refresh(services).then((changed) => changed && win?.webContents.send('services-changed'));
   voice.start();
 
   edge.on('opened', (s) => pushStatus({ active: s.name }));

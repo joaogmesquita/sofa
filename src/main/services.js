@@ -10,6 +10,7 @@ const TV_UA =
 module.exports = [
   {
     id: 'youtube',
+    site: 'https://www.youtube.com/',
     name: 'YouTube',
     hint: 'Interface de TV, pareia com o app do celular',
     url: 'https://www.youtube.com/tv',
@@ -22,6 +23,7 @@ module.exports = [
   },
   {
     id: 'netflix',
+    site: 'https://www.netflix.com/br/',
     name: 'Netflix',
     hint: 'Navegação por controle',
     url: 'https://www.netflix.com/browse',
@@ -33,6 +35,7 @@ module.exports = [
   },
   {
     id: 'prime',
+    site: 'https://www.primevideo.com/',
     name: 'Prime Video',
     hint: 'Navegação por controle',
     url: 'https://www.primevideo.com',
@@ -44,6 +47,7 @@ module.exports = [
   },
   {
     id: 'disney',
+    site: 'https://www.disneyplus.com/pt-br',
     name: 'Disney+',
     hint: 'Navegação por controle',
     url: 'https://www.disneyplus.com',
@@ -55,6 +59,7 @@ module.exports = [
   },
   {
     id: 'jellyfin',
+    site: 'http://localhost:8096/web/index.html',
     name: 'Jellyfin',
     hint: 'Filmes e séries do PC',
     url: 'http://localhost:8096/web/index.html',

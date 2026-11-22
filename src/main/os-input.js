@@ -11,7 +11,7 @@ const mouse_event = user32.func(
 
 const KEYUP = 0x0002;
 const VK = { volup: 0xaf, voldown: 0xae, mute: 0xad, mediaplay: 0xb3 };
-const M = { MOVE: 0x1, LDOWN: 0x2, LUP: 0x4, RDOWN: 0x8, RUP: 0x10, WHEEL: 0x800 };
+const M = { MOVE: 0x1, LDOWN: 0x2, LUP: 0x4, RDOWN: 0x8, RUP: 0x10, WHEEL: 0x800, HWHEEL: 0x1000 };
 
 function tap(vk) {
   keybd_event(vk, 0, 0, 0);
@@ -36,5 +36,8 @@ module.exports = {
   },
   scroll(amount) {
     mouse_event(M.WHEEL, 0, 0, Math.round(amount), 0);
+  },
+  hscroll(amount) {
+    mouse_event(M.HWHEEL, 0, 0, Math.round(amount), 0);
   }
 };

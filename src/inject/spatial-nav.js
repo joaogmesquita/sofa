@@ -24,6 +24,8 @@
   // permite que scripts por site acrescentem filtros e seletores
   api.extraSelector = '';
   api.ignore = (el) => false;
+  api.scope = () => document; // raiz onde procurar itens (ex.: só dentro de um diálogo aberto)
+  api.hover = true;           // simula mouseover ao focar (desligado na Netflix: abre prévias por cima)
 
   function attachRing() {
     if (!ring.isConnected && document.body) document.body.appendChild(ring);
@@ -43,7 +45,7 @@
 
   function candidates() {
     const sel = api.extraSelector ? SELECTOR + ',' + api.extraSelector : SELECTOR;
-    const all = [...document.querySelectorAll(sel)].filter((el) => visible(el) && !api.ignore(el));
+    const all = [...(api.scope() || document).querySelectorAll(sel)].filter((el) => visible(el) && !api.ignore(el));
     // evita escolher um item e também o filho dele: mantém o elemento mais externo
     return all.filter((el) => !all.some((o) => o !== el && o.contains(el) && o.matches(SELECTOR)));
   }
@@ -74,13 +76,15 @@
     return Math.max(primary, 0) + ortho * (overlap > 0 ? 0.3 : 2.5);
   }
 
-  function setFocus(el) {
+  function setFocus(el, scroll = true) {
     current = el;
     try { el.focus({ preventScroll: true }); } catch {}
-    el.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' });
-    // hover: Netflix e outros mostram detalhes ao passar o mouse
-    el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
-    el.dispatchEvent(new MouseEvent('mouseenter', { bubbles: false }));
+    if (scroll) el.scrollIntoView({ block: 'center', inline: 'nearest', behavior: 'smooth' });
+    // hover: alguns sites mostram detalhes ao passar o mouse
+    if (api.hover) {
+      el.dispatchEvent(new MouseEvent('mouseover', { bubbles: true }));
+      el.dispatchEvent(new MouseEvent('mouseenter', { bubbles: false }));
+    }
     attachRing();
     ring.style.display = 'block';
   }
@@ -108,8 +112,14 @@
       .sort((a, b) => { const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect(); return (ra.top - rb.top) || (ra.left - rb.left); })[0] || list[0];
   }
 
+  // ganchos para scripts por site
+  api.focusEl = setFocus;
+  api.current = () => (current && current.isConnected && ring.style.display !== 'none' ? current : null);
+  api.isPlayer = playerMode;
+  api.visible = visible;
+
   api.nav = (dir) => {
-    if (playerMode()) return false;
+    if (api.isPlayer()) return false;
     const list = candidates();
     if (!list.length) return false;
     if (!current || !current.isConnected || !visible(current) || ring.style.display === 'none') {
@@ -131,7 +141,7 @@
   };
 
   api.ok = () => {
-    if (playerMode()) return false;
+    if (api.isPlayer()) return false;
     if (!current || !current.isConnected) return api.nav('down');
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(current.tagName)) { current.focus(); return true; }
     current.click();

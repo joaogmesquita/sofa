@@ -228,16 +228,13 @@ class Gamepad extends EventEmitter {
       }
     }
 
-    // analógico direito = mouse
-    const rx = Math.abs(g.sThumbRX) > 8000 ? g.sThumbRX / 32767 : 0;
-    const ry = Math.abs(g.sThumbRY) > 8000 ? g.sThumbRY / 32767 : 0;
-    if (rx || ry) {
-      const speed = 18;
-      this.emit('action', {
-        type: 'mouse',
-        dx: Math.sign(rx) * rx * rx * speed,
-        dy: -Math.sign(ry) * ry * ry * speed
-      });
+    // analógico direito = rolar a página (inclinação = velocidade); o mouse fica no touchpad
+    const rx = Math.abs(g.sThumbRX) > 9000 ? g.sThumbRX / 32767 : 0;
+    const ry = Math.abs(g.sThumbRY) > 9000 ? g.sThumbRY / 32767 : 0;
+    if ((rx || ry) && now - (pad.scrollSent || 0) >= 40) {
+      pad.scrollSent = now;
+      if (ry) this.emit('action', { type: 'scroll', amount: Math.sign(ry) * ry * ry * 160 });
+      if (rx) this.emit('action', { type: 'hscroll', amount: Math.sign(rx) * rx * rx * 160 });
     }
 
     pad.prev = buttons;
@@ -261,23 +258,38 @@ class Gamepad extends EventEmitter {
     }
   }
 
-  // touchpad do DualSense como controle deslizante: dedo para cima = volume +
+  // touchpad do DualSense como touchpad de notebook:
+  //   um dedo move o cursor, dois dedos rolam, clicar no touchpad = clique
   touch(pad, buf, o) {
-    const t = buf[o + 32];
-    const touching = t !== undefined && !(t & 0x80);
-    if (!touching) {
-      pad.touchY = null;
-      pad.touchAcc = 0;
-      return;
+    const pt = (k) => {
+      const b = o + 32 + k * 4;
+      if (buf[b] === undefined || buf[b] & 0x80) return null; // bit 7 = sem toque
+      return { x: buf[b + 1] | ((buf[b + 2] & 0x0f) << 8), y: (buf[b + 2] >> 4) | (buf[b + 3] << 4) };
+    };
+    const p1 = pt(0), p2 = pt(1);
+    const fingers = (p1 ? 1 : 0) + (p2 ? 1 : 0);
+    const prev = pad.touchPrev;
+    pad.touchPrev = p1 ? { p1, p2, fingers } : null;
+    if (!p1 || !prev || prev.fingers !== fingers) return; // começo do toque ou troca de dedos
+    const dx = p1.x - prev.p1.x, dy = p1.y - prev.p1.y;
+    if (fingers === 2) {
+      pad.scrollAcc = (pad.scrollAcc || 0) - dy * 3;
+    } else {
+      const speed = 1.6 * (1 + Math.min(Math.hypot(dx, dy) / 12, 1.5)); // aceleração
+      pad.mx = (pad.mx || 0) + dx * speed;
+      pad.my = (pad.my || 0) + dy * speed;
     }
-    const y = (buf[o + 34] >> 4) | (buf[o + 35] << 4); // 0 (topo) a ~1079
-    if (pad.touchY != null) {
-      pad.touchAcc = (pad.touchAcc || 0) + pad.touchY - y;
-      const STEP = 45; // ~4% da altura do touchpad por degrau de 2%
-      while (pad.touchAcc >= STEP) { pad.touchAcc -= STEP; this.emit('action', { type: 'volume', delta: +2 }); }
-      while (pad.touchAcc <= -STEP) { pad.touchAcc += STEP; this.emit('action', { type: 'volume', delta: -2 }); }
+    const now = Date.now();
+    if (now - (pad.touchSent || 0) < 8) return; // até ~120 envios/s
+    pad.touchSent = now;
+    if (Math.abs(pad.mx) >= 1 || Math.abs(pad.my) >= 1) {
+      this.emit('action', { type: 'mouse', dx: pad.mx, dy: pad.my });
+      pad.mx = pad.my = 0;
     }
-    pad.touchY = y;
+    if (Math.abs(pad.scrollAcc || 0) >= 40) {
+      this.emit('action', { type: 'scroll', amount: pad.scrollAcc });
+      pad.scrollAcc = 0;
+    }
   }
 }
 
