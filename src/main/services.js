@@ -58,6 +58,19 @@ module.exports = [
     inject: []
   },
   {
+    id: 'xcloud',
+    site: 'https://www.xbox.com/pt-BR/play',
+    name: 'Xbox Cloud Gaming',
+    hint: 'Jogos na nuvem com Game Pass · segure PS/Xbox para voltar',
+    url: 'https://www.xbox.com/pt-BR/play',
+    color: '#107c10',
+    mode: 'keys',
+    gamepad: 'native', // o controle vai direto para o jogo
+    back: 'escape',
+    keys: { playpause: ' ' },
+    inject: []
+  },
+  {
     id: 'jellyfin',
     site: 'http://localhost:8096/web/index.html',
     name: 'Jellyfin',

@@ -237,6 +237,16 @@ class Gamepad extends EventEmitter {
       if (rx) this.emit('action', { type: 'hscroll', amount: Math.sign(rx) * rx * rx * 160 });
     }
 
+    // segurar Guide/PS (ou Back+Start) por 1 s = voltar ao Sofá mesmo dentro de jogos na nuvem
+    const homeHeld = buttons & B.GUIDE || (buttons & (B.BACK | B.START)) === (B.BACK | B.START);
+    if (homeHeld) {
+      if (!pad.homeSince) pad.homeSince = now;
+      else if (!pad.homeLongSent && now - pad.homeSince >= 1000) { pad.homeLongSent = true; this.emit('action', { type: 'home', long: true }); }
+    } else {
+      pad.homeSince = 0;
+      pad.homeLongSent = false;
+    }
+
     pad.prev = buttons;
   }
 

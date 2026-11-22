@@ -46,7 +46,8 @@ class Edge extends EventEmitter {
 
   buildScript(service) {
     const files = ['common.js', ...(service.mode === 'spatial' ? ['spatial-nav.js'] : []), ...service.inject];
-    return files.map((f) => fs.readFileSync(path.join(INJECT_DIR, f), 'utf8')).join('\n;\n');
+    const prefix = service.gamepad === 'native' ? 'window.__sofaNativeGamepad = true;\n' : '';
+    return prefix + files.map((f) => fs.readFileSync(path.join(INJECT_DIR, f), 'utf8')).join('\n;\n');
   }
 
   async launch(service) {

@@ -1,6 +1,6 @@
 # sofá.
 
-Transforma o PC com Windows numa **smart TV**: um launcher em tela cheia, no estilo das interfaces de console, que abre YouTube, Netflix, Prime Video, Disney+ e Jellyfin e que é controlado por **controle de videogame, celular ou voz**.
+Transforma o PC com Windows numa **smart TV**: um launcher em tela cheia, no estilo das interfaces de console, que abre YouTube, Netflix, Prime Video, Disney+, Xbox Cloud Gaming e Jellyfin e que é controlado por **controle de videogame, celular ou voz**.
 
 ## Por que o Sofá?
 
@@ -20,6 +20,7 @@ O Sofá junta as duas coisas e vai além: **controla os streamings por dentro, c
 | DualSense por Bluetooth, sem programas extras | parcial | parcial | ✅ |
 | Modo ambiente e zoom para **ultrawide** | – | – | ✅ |
 | "Continuar assistindo" entre serviços | – | – | ✅ |
+| Jogos na nuvem (Xbox Cloud Gaming) com o mesmo controle | – | – | ✅ |
 
 Em resumo: ligue o PC, pegue o controle (ou o celular) e assista, sem levantar do sofá.
 
@@ -36,6 +37,7 @@ Em resumo: ligue o PC, pegue o controle (ou o celular) e assista, sem levantar d
 - **Comandos de voz em português** com Whisper local, sem enviar áudio para a nuvem: "abrir Netflix", "procurar Round 6 na Netflix", "pausar", "aumentar volume".
 - **Monitores ultrawide**: modos Original (com modo ambiente nas laterais), Zoom suave, Preencher e Esticar.
 - **Navegação espacial** injetada em sites feitos para mouse (Netflix, Prime, Disney+).
+- **Xbox Cloud Gaming**: o controle vai direto para o jogo; segure PS/Xbox por 1 s para voltar ao Sofá.
 - **Barra de volume na tela**, com o volume exato do Windows via Core Audio.
 
 ## Requisitos

@@ -12,6 +12,7 @@ const SERVICES = [
   { id: 'netflix', name: 'Netflix', words: ['netflix', 'netflics', 'net flix', 'netflis'] },
   { id: 'prime', name: 'Prime Video', words: ['prime video', 'amazon prime', 'prime', 'amazon'] },
   { id: 'disney', name: 'Disney+', words: ['disney plus', 'disney mais', 'disney+', 'disney', 'disnei'] },
+  { id: 'xcloud', name: 'Xbox Cloud Gaming', words: ['xbox cloud gaming', 'xbox cloud', 'cloud gaming', 'game pass', 'xcloud', 'xbox', 'jogos na nuvem'] },
   { id: 'jellyfin', name: 'Jellyfin', words: ['jellyfin', 'jelly fin', 'meus filmes', 'minha biblioteca'] }
 ];
 
@@ -21,11 +22,12 @@ const SEARCH = {
   netflix: (q) => `https://www.netflix.com/search?q=${enc(q)}`,
   prime: (q) => `https://www.primevideo.com/search/?phrase=${enc(q)}`,
   disney: (q) => `https://www.disneyplus.com/search?q=${enc(q)}`,
+  xcloud: (q) => `https://www.xbox.com/pt-BR/play/search?q=${enc(q)}`,
   jellyfin: (q) => `http://localhost:8096/web/index.html#/search.html?query=${enc(q)}`
 };
 
 const OPEN_VERBS = /\b(abrir|abre|abra|iniciar|inicia|inicie|ir para|vai para|va para|entrar no|entra no|entrar na|entra na|ligar|liga|coloca|colocar|bota|botar|quero ver|quero assistir)\b/g;
-const SEARCH_VERBS = /\b(procurar|procura|procure|buscar|busca|busque|pesquisar|pesquisa|pesquise|achar|acha|encontrar|encontra|assistir|assiste|ver|tocar|toca|toque|reproduzir|passar|passa)\b/g;
+const SEARCH_VERBS = /\b(procurar|procura|procure|buscar|busca|busque|pesquisar|pesquisa|pesquise|achar|acha|encontrar|encontra|assistir|assiste|ver|tocar|toca|toque|reproduzir|passar|passa|jogar|joga|jogue)\b/g;
 const FILLER = new Set(['e', 'no', 'na', 'nos', 'nas', 'do', 'da', 'o', 'a', 'os', 'as', 'em', 'um', 'uma', 'ai', 'pra', 'para', 'me', 'de', 'sofa', 'favor', 'por', 'mim']);
 
 // tira palavras de ligação só das pontas ("receita de bolo" mantém o "de")

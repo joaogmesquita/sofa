@@ -2,7 +2,7 @@
 // escondemos a Gamepad API das páginas para o comando não chegar duplicado.
 (() => {
   try {
-    Object.defineProperty(Navigator.prototype, 'getGamepads', {
+    if (!window.__sofaNativeGamepad) Object.defineProperty(Navigator.prototype, 'getGamepads', {
       value: () => [null, null, null, null],
       configurable: true
     });

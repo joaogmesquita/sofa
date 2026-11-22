@@ -244,14 +244,25 @@ app.whenReady().then(async () => {
   icons.refresh(services).then((changed) => changed && win?.webContents.send('services-changed'));
   voice.start();
 
-  edge.on('opened', (s) => pushStatus({ active: s.name }));
+  edge.on('opened', (s) => {
+    pushStatus({ active: s.name });
+    if (s.gamepad === 'native') setTimeout(() => { overlayShow(s.name, 'O controle vai direto para o jogo · segure PS/Xbox para voltar ao Sofá'); overlayHide(4500); }, 2500);
+  });
   edge.on('closed', () => {
     dial.setRunning('YouTube', false);
     pushStatus({ active: null });
     showLauncher();
   });
 
-  gamepad.on('action', route);
+  gamepad.on('action', (a) => {
+    if (edge.active && edge.service?.gamepad === 'native') {
+      // o jogo lê o controle direto; o Sofá só reage a segurar PS (voltar) e ao microfone (voz)
+      if (a.type === 'voice' || (a.type === 'home' && a.long)) return route(a);
+      return;
+    }
+    if (a.type === 'home' && a.long) return; // fora dos jogos, o toque curto já voltou ao início
+    route(a);
+  });
   gamepad.on('status', (n) => pushStatus({ gamepads: n }));
   gamepad.start();
 

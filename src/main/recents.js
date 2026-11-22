@@ -13,6 +13,7 @@ const WATCHING = {
   netflix: (s) => /netflix\.com\/watch\//.test(s.url),
   disney: (s) => /\/(play|video)\//.test(s.url),
   prime: (s) => s.big && s.duration > 600,
+  xcloud: (s) => /\/play\/(launch|games)\//.test(s.url),
   jellyfin: (s) => /#\/video/.test(s.url) || s.big
 };
 
