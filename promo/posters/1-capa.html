@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  .left { position: absolute; left: 80px; top: 70px; width: 640px; display: flex; flex-direction: column; gap: 30px; }
+  .shot { position: absolute; left: 760px; top: 150px; width: 1060px; transform: perspective(1800px) rotateY(-9deg); transform-origin: left center; }
+  .chips { display: flex; flex-wrap: wrap; gap: 12px; }
+</style></head>
+<body>
+  <div class="glow"></div>
+  <div class="left">
+    <div class="logo">sofá</div>
+    <h1>Seu PC vira uma <em>smart TV</em>.</h1>
+    <p class="lead">Netflix, YouTube em 4K, Prime Video, Disney+ e Xbox Cloud Gaming, controlados pelo DualSense, pelo celular ou pela voz.</p>
+    <div class="chips">
+      <span class="pill">🎮 Controle de PS5 e Xbox</span>
+      <span class="pill">📱 Celular como controle</span>
+      <span class="pill">🎤 Voz em português</span>
+      <span class="pill">🖥️ Ultrawide</span>
+    </div>
+  </div>
+  <img class="shot" src="../out/home-netflix-16x9.png" alt="">
+  <div class="foot"><b>Open source</b> · github.com/joaogmesquita/sofa</div>
+</body></html>

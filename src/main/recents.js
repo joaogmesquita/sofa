@@ -28,6 +28,7 @@ const SNAPSHOT = `(() => {
   if (yt) o.videoId = yt[1];
   const og = document.querySelector('meta[property="og:image"]');
   if (og && og.content) o.image = og.content;
+  if (!o.image) { try { o.image = sessionStorage.getItem('__sofaArt') || undefined; } catch {} }
   const t = document.querySelector('[data-uia="video-title"] h4, [data-uia="video-title"], .atvwebplayersdk-title-text, [data-testid="title-field"], .title-field, .videoOsdTitle, .osdTitle');
   if (t && t.textContent.trim()) o.title = t.textContent.trim().replace(/\\s+/g, ' ').slice(0, 90);
   const ep = document.querySelector('.atvwebplayersdk-subtitle-text, [data-uia="video-title"] span, [data-testid="subtitle-field"], .videoOsdSecondaryText');

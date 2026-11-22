@@ -31,7 +31,7 @@ module.exports = [
     mode: 'spatial',
     back: 'spatial',
     keys: { playpause: ' ' },
-    inject: ['netflix.js']
+    inject: ['netflix.js', 'ambient.js']
   },
   {
     id: 'prime',
@@ -43,7 +43,7 @@ module.exports = [
     mode: 'spatial',
     back: 'spatial',
     keys: { playpause: ' ' },
-    inject: []
+    inject: ['ambient.js']
   },
   {
     id: 'disney',
@@ -55,7 +55,7 @@ module.exports = [
     mode: 'spatial',
     back: 'spatial',
     keys: { playpause: ' ' },
-    inject: []
+    inject: ['ambient.js']
   },
   {
     id: 'xcloud',

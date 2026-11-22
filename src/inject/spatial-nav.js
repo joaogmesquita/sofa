@@ -144,9 +144,24 @@
     if (api.isPlayer()) return false;
     if (!current || !current.isConnected) return api.nav('down');
     if (/^(INPUT|TEXTAREA|SELECT)$/.test(current.tagName)) { current.focus(); return true; }
+    rememberArt(current);
     current.click();
     return true;
   };
+
+  // guarda a arte do título escolhido: vira o "modo ambiente" nos sites com DRM
+  // (o vídeo protegido não pode ser lido) e a miniatura do "Continuar assistindo"
+  function rememberArt(el) {
+    const pick = (root) => {
+      if (!root) return null;
+      const imgs = [...root.querySelectorAll('img')].filter((i) => i.naturalWidth >= 200 && (i.currentSrc || i.src).startsWith('http'));
+      imgs.sort((a, b) => b.naturalWidth * b.naturalHeight - a.naturalWidth * a.naturalHeight);
+      return imgs[0] ? imgs[0].currentSrc || imgs[0].src : null;
+    };
+    const art = pick(el) || pick(el.closest('section, [class*="billboard"], [data-uia*="billboard"]'));
+    if (art) try { sessionStorage.setItem('__sofaArt', art); } catch {}
+  }
+  api.rememberArt = rememberArt;
 
   api.back = () => {
     if (document.fullscreenElement) { document.exitFullscreen(); return true; }

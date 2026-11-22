@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><link rel="stylesheet" href="base.css">
+<style>
+  .left { position: absolute; left: 80px; top: 90px; width: 640px; display: flex; flex-direction: column; gap: 28px; }
+  .grid { position: absolute; right: 80px; top: 110px; width: 760px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .card { background: rgba(21,24,33,.85); border-radius: 22px; padding: 26px 28px; box-shadow: inset 0 0 0 1px rgba(255,255,255,.07); }
+  .card .k { display: flex; gap: 8px; margin-bottom: 14px; }
+  .card b { display: block; font-size: 25px; margin-bottom: 6px; }
+  .card span { font-size: 19px; color: #a3abbe; line-height: 1.4; }
+  .card.wide { grid-column: span 2; display: flex; align-items: center; gap: 22px; }
+  .card.wide .k { margin: 0; }
+</style></head>
+<body>
+  <div class="glow"></div>
+  <div class="left">
+    <div class="logo">sofá</div>
+    <h1>O controle funciona <em>dentro</em> dos apps.</h1>
+    <p class="lead">Não é só um menu bonito: o Sofá navega pelas linhas da Netflix, do Prime e do Disney+ como no app da TV. No Xbox Cloud Gaming, o controle vai direto para o jogo.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><div class="k"><kbd>L</kbd><kbd>✚</kbd></div><b>Navegar</b><span>Item por item, linha por linha, virando o carrossel sozinho.</span></div>
+    <div class="card"><div class="k"><kbd>R</kbd></div><b>Rolar a página</b><span>Mais rápido quanto mais você inclina.</span></div>
+    <div class="card"><div class="k"><kbd>L2</kbd><kbd>R2</kbd></div><b>Volume</b><span>Sensível à pressão, com barra na tela.</span></div>
+    <div class="card"><div class="k"><kbd>Touchpad</kbd></div><b>Mouse</b><span>Um dedo move, dois dedos rolam.</span></div>
+    <div class="card"><div class="k"><kbd>🎤</kbd></div><b>Voz</b><span>“Procurar Round 6 na Netflix”.</span></div>
+    <div class="card"><div class="k"><kbd>PS</kbd></div><b>Início</b><span>Segure para sair de um jogo na nuvem.</span></div>
+    <div class="card wide"><div class="k"><kbd>DualSense</kbd></div><span>Pelo Bluetooth, direto, sem Steam e sem DS4Windows. Controles de Xbox também funcionam.</span></div>
+  </div>
+  <div class="foot"><b>Open source</b> · github.com/joaogmesquita/sofa</div>
+</body></html>
