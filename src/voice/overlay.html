@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self'">
+<title>Sofá Voz</title>
+<style>
+  html, body { margin: 0; height: 100%; background: transparent; overflow: hidden;
+    font-family: "Segoe UI Variable Display", "Segoe UI", system-ui, sans-serif; user-select: none; }
+  .wrap { height: 100%; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 24px; box-sizing: border-box; }
+  .pill { display: flex; align-items: center; gap: 22px; min-width: 520px; max-width: 900px; padding: 18px 30px 18px 22px;
+    border-radius: 999px; color: #fff; background: rgba(14, 16, 24, .88); backdrop-filter: blur(20px);
+    box-shadow: 0 18px 50px rgba(0,0,0,.55), inset 0 0 0 1px rgba(255,255,255,.08);
+    transform: translateY(140%); opacity: 0; transition: transform .28s cubic-bezier(.2,.9,.3,1.2), opacity .2s; }
+  .pill.show { transform: none; opacity: 1; }
+  .orb { flex: none; width: 64px; height: 64px; border-radius: 50%; display: grid; place-items: center;
+    background: conic-gradient(from var(--a, 0deg), #5b8cff, #b45bff, #ff5b9d, #5bd6ff, #5b8cff); animation: spin 3s linear infinite; }
+  .orb::after { content: ""; width: 54px; height: 54px; border-radius: 50%; background: #0e1018; grid-area: 1 / 1; }
+  .bars { grid-area: 1 / 1; z-index: 1; display: flex; gap: 4px; align-items: center; height: 30px; }
+  .bars i { width: 4px; height: 6px; border-radius: 2px; background: #fff; transition: height .08s; }
+  .thinking .orb { animation-duration: .8s; }
+  .text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .state { font-size: 15px; color: #9aa3b8; }
+  .main { font-size: 26px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .error .main { color: #ffb4b4; }
+  .wrap { position: relative; }
+  .vol { position: absolute; left: 50%; bottom: 24px; translate: -50% 0; min-width: 0; width: 520px; gap: 18px; padding: 16px 26px; }
+  .vol .ico { font-size: 28px; width: 34px; text-align: center; }
+  .vol .track { flex: 1; height: 10px; border-radius: 99px; background: rgba(255,255,255,.14); overflow: hidden; }
+  .vol .fill { height: 100%; width: 0; border-radius: 99px; background: linear-gradient(90deg, #5b8cff, #b45bff); transition: width .12s ease-out; }
+  .vol.muted .fill { background: #6b7280; }
+  .vol .num { font-size: 26px; font-weight: 700; width: 56px; text-align: right; font-variant-numeric: tabular-nums; }
+  @property --a { syntax: "<angle>"; inherits: false; initial-value: 0deg; }
+  @keyframes spin { to { --a: 360deg; } }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="pill" id="pill">
+      <div class="orb"><div class="bars" id="bars"><i></i><i></i><i></i><i></i><i></i></div></div>
+      <div class="text">
+        <span class="state" id="state">Ouvindo…</span>
+        <span class="main" id="main">Fale um comando</span>
+      </div>
+    </div>
+    <div class="pill vol" id="vol">
+      <span class="ico" id="vol-ico">🔊</span>
+      <div class="track"><div class="fill" id="vol-fill"></div></div>
+      <span class="num" id="vol-num">0</span>
+    </div>
+  </div>
+  <script src="overlay.js"></script>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#0b0d12">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg">
+<link rel="apple-touch-icon" href="icon.svg">
+<title>Sofá Remoto</title>
+<link rel="stylesheet" href="remote.css">
+</head>
+<body>
+  <header>
+    <div class="brand">sofá</div>
+    <div id="now" class="now">conectando…</div>
+    <span id="dot" class="dot"></span>
+  </header>
+
+  <nav class="apps" id="apps"></nav>
+
+  <div class="tabs">
+    <button class="tab active" data-tab="pad">Controle</button>
+    <button class="tab" data-tab="touch">Touchpad</button>
+    <button class="tab" data-tab="kbd">Teclado</button>
+  </div>
+
+  <section id="pad" class="view active">
+    <div class="topbtns">
+      <button class="btn" data-a='{"type":"back"}'>↩<small>Voltar</small></button>
+      <button class="btn" data-a='{"type":"home"}'>⌂<small>Início</small></button>
+      <button class="btn" id="mic-btn">🎤<small>Voz</small></button>
+    </div>
+    <div class="dpad">
+      <button class="d up" data-a='{"type":"nav","dir":"up"}' data-repeat>▲</button>
+      <button class="d left" data-a='{"type":"nav","dir":"left"}' data-repeat>◀</button>
+      <button class="d ok" data-a='{"type":"ok"}'>OK</button>
+      <button class="d right" data-a='{"type":"nav","dir":"right"}' data-repeat>▶</button>
+      <button class="d down" data-a='{"type":"nav","dir":"down"}' data-repeat>▼</button>
+    </div>
+    <div class="media">
+      <button class="btn" data-a='{"type":"seek","dir":"back"}' data-repeat>⏪</button>
+      <button class="btn big" data-a='{"type":"playpause"}'>⏯</button>
+      <button class="btn" data-a='{"type":"seek","dir":"fwd"}' data-repeat>⏩</button>
+    </div>
+    <div class="volume">
+      <button class="btn" data-a='{"type":"volume","dir":"voldown"}' data-repeat>－<small>Volume</small></button>
+      <button class="btn" data-a='{"type":"volume","dir":"volup"}' data-repeat>＋<small>Volume</small></button>
+      <button class="btn" data-a='{"type":"aspect"}'>⛶<small>Proporção</small></button>
+      <button class="btn" data-a='{"type":"volume","dir":"mute"}'>🔇<small>Mudo</small></button>
+    </div>
+  </section>
+
+  <section id="touch" class="view">
+    <div id="pad-area" class="pad-area"><span>Deslize para mover o mouse<br>Toque para clicar · dois dedos para rolar</span></div>
+    <div class="mouse-btns">
+      <button class="btn" data-a='{"type":"click","button":"left"}'>Clique</button>
+      <button class="btn" data-a='{"type":"click","button":"right"}'>Botão direito</button>
+    </div>
+  </section>
+
+  <section id="kbd" class="view">
+    <p class="muted">Fale um comando (toque no 🎤 do teclado do celular) ou digite: <b>abrir Netflix</b>, <b>procurar Round 6</b>, <b>pausar</b>, <b>aumentar volume</b>.</p>
+    <form id="text-form">
+      <input id="text" autocomplete="off" autocapitalize="off" placeholder="Comando ou texto…" enterkeyhint="send">
+      <button class="btn" id="cmd-btn">Comando</button>
+    </form>
+    <div class="keys four">
+      <button class="btn" data-a='{"type":"key","key":"Backspace"}' data-repeat>⌫ Apagar</button>
+      <button class="btn" data-a='{"type":"key","key":"Enter"}'>↵ Enter</button>
+      <button class="btn" id="type-btn">⌨ Digitar na TV</button>
+      <button class="btn" data-a='{"type":"volume","dir":"mute"}'>🔇 Mudo</button>
+    </div>
+  </section>
+
+  <script src="remote.js"></script>
+</body>
+</html>

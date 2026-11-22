@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'">
+<title>Sofá</title>
+<link rel="stylesheet" href="launcher.css">
+</head>
+<body>
+  <main id="home">
+    <header>
+      <div class="brand">sofá</div>
+      <div class="status">
+        <span id="st-pad" class="chip" title="Controle">🎮 <b>0</b></span>
+        <span id="st-phone" class="chip" title="Celulares conectados">📱 <b>0</b></span>
+        <span id="st-cast" class="chip off" title="Transmissão">📡 <b>Transmissão</b></span>
+        <time id="clock"></time>
+      </div>
+    </header>
+
+    <section class="row-title">Apps</section>
+    <section id="apps" class="apps"></section>
+
+    <section class="bottom">
+      <div class="panel cast-panel">
+        <h2>Transmitir do celular</h2>
+        <ol>
+          <li><b>YouTube:</b> no app, toque em <span class="ico">⎚</span> Transmitir e escolha <b class="dev-name">Sofá (PC)</b>.</li>
+          <li><b>Jellyfin:</b> no app, toque no ícone de transmitir e escolha a sessão deste PC.</li>
+          <li><b>Netflix, Prime, Disney+:</b> abra pelo controle remoto do Sofá no celular.</li>
+          <li><b>Voz:</b> aperte 🎤 no controle e diga “abrir Netflix” ou “procurar Round 6 na Netflix”.</li>
+        </ol>
+      </div>
+      <div class="panel remote-panel">
+        <img id="qr" alt="QR code do controle remoto">
+        <div>
+          <h2>Controle no celular</h2>
+          <p>Aponte a câmera para o código ou abra</p>
+          <p class="url" id="remote-url"></p>
+          <p class="muted">Mesma rede Wi-Fi do PC</p>
+        </div>
+      </div>
+      <div class="side-actions">
+        <button class="focusable action" data-row="1" data-act="refresh">↻ Atualizar</button>
+        <button class="focusable action" data-row="1" data-act="ambient">📡 Tela de transmissão</button>
+        <button class="focusable action" data-row="1" data-act="quit">⏻ Sair do Sofá</button>
+      </div>
+    </section>
+    <footer class="hints">
+      <span><kbd>A</kbd>/<kbd>✕</kbd> abrir</span>
+      <span><kbd>🎤</kbd> botão do microfone do DualSense: comando de voz</span>
+      <span><kbd>Guide</kbd>/<kbd>PS</kbd> volta para cá</span>
+      <span><kbd>L2</kbd><kbd>R2</kbd> ou deslize no touchpad: volume</span>
+      <span><kbd>Y</kbd>/<kbd>△</kbd> proporção ultrawide</span>
+      <span><kbd>Analógico direito</kbd> mouse</span>
+    </footer>
+  </main>
+
+  <div id="ambient" hidden>
+    <div class="amb-bg"></div>
+    <div class="amb-content">
+      <time id="amb-clock"></time>
+      <div class="amb-date" id="amb-date"></div>
+      <div class="amb-cast">
+        <div class="amb-pulse">📡</div>
+        <div>
+          <h1>Pronto para transmitir</h1>
+          <p>No app do YouTube, toque em Transmitir e escolha <b class="dev-name">Sofá (PC)</b></p>
+          <p class="muted">Qualquer botão do controle, do teclado ou do celular volta ao menu</p>
+        </div>
+      </div>
+      <img id="amb-qr" alt="">
+    </div>
+  </div>
+
+  <div id="toast" hidden></div>
+  <script src="launcher.js"></script>
+</body>
+</html>
