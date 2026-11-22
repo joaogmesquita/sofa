@@ -49,9 +49,21 @@ Em resumo: ligue o PC, pegue o controle (ou o celular) e assista, sem levantar d
 
 ## Como usar
 
+### Pelo executável (mais fácil)
+
+Baixe na página de [Releases](https://github.com/joaogmesquita/sofa/releases):
+
+- **Sofa-Setup.exe**: instala e cria atalhos na área de trabalho e no menu Iniciar.
+- **Sofa-Portatil.exe**: abre direto, sem instalar.
+
+Como o programa não tem assinatura digital paga, o Windows pode mostrar "O Windows protegeu o computador". Clique em **Mais informações → Executar assim mesmo**.
+
+### Pelo código
+
 ```bash
 npm install
-npm start
+npm start        # abre em modo de desenvolvimento
+npm run dist     # gera os executáveis em dist/
 ```
 
 O npm 11+ pode pedir para aprovar os scripts de instalação de `electron`, `koffi` e `node-hid`:

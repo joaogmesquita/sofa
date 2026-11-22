@@ -19,6 +19,9 @@ const REMOTE_PORT = 8787;
 const DIAL_PORT = 56790;
 const DEVICE_NAME = 'Sofá (PC)';
 
+// mesma pasta de dados no modo dev e no programa instalado (logins do Edge, ícones, recentes)
+app.setPath('userData', path.join(app.getPath('appData'), 'sofa'));
+
 if (!app.requestSingleInstanceLock()) app.quit();
 
 let win;

@@ -5,7 +5,8 @@
   "main": "src/main/main.js",
   "private": true,
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "dist": "electron-builder --win nsis portable"
   },
   "dependencies": {
     "chrome-remote-interface": "0.33.2",
@@ -15,7 +16,8 @@
     "ws": "8.18.0"
   },
   "devDependencies": {
-    "electron": "33.2.1"
+    "electron": "33.2.1",
+    "electron-builder": "^25.1.8"
   },
   "allowScripts": {
     "electron@33.2.1": true,
@@ -23,5 +25,38 @@
     "node-hid@3.1.0": true
   },
   "license": "MIT",
-  "repository": "github:joaogmesquita/sofa"
+  "repository": "github:joaogmesquita/sofa",
+  "productName": "Sofá",
+  "author": "joaogmesquita",
+  "build": {
+    "appId": "io.github.joaogmesquita.sofa",
+    "productName": "Sofá",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "src/voice/whisper_server.py"
+    ],
+    "npmRebuild": false,
+    "win": {
+      "icon": "build/icon.png",
+      "artifactName": "Sofa-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "Sofá",
+      "artifactName": "Sofa-Setup-${version}.${ext}"
+    },
+    "portable": {
+      "artifactName": "Sofa-Portatil-${version}.${ext}"
+    }
+  }
 }

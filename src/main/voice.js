@@ -5,7 +5,8 @@ const http = require('http');
 const path = require('path');
 
 const PORT = 8790;
-const SERVER = path.join(__dirname, '..', 'voice', 'whisper_server.py');
+// no programa empacotado, o script fica fora do app.asar (o Python não lê de dentro dele)
+const SERVER = path.join(__dirname, '..', 'voice', 'whisper_server.py').replace('app.asar', 'app.asar.unpacked');
 
 const SERVICES = [
   { id: 'youtube', name: 'YouTube', words: ['youtube', 'you tube', 'iutubi', 'yutube'] },
