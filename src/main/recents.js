@@ -6,11 +6,23 @@ const https = require('https');
 const MAX = 14;
 const MIN_WATCH_S = 45; // só conta como assistido depois disso
 
+// Só conta quando está no player de verdade (trailers que tocam sozinhos nas telas
+// iniciais não entram). Para cada serviço, o jeito confiável de saber:
+const WATCHING = {
+  youtube: (s) => !!s.videoId,
+  netflix: (s) => /netflix\.com\/watch\//.test(s.url),
+  disney: (s) => /\/(play|video)\//.test(s.url),
+  prime: (s) => s.big && s.duration > 600,
+  jellyfin: (s) => /#\/video/.test(s.url) || s.big
+};
+
 // Lido dentro da página do serviço via CDP
 const SNAPSHOT = `(() => {
   const v = [...document.querySelectorAll('video')].find((x) => x.duration > 0 && x.currentTime > 0);
   if (!v) return null;
-  const o = { url: location.href, title: document.title, time: v.currentTime, duration: isFinite(v.duration) ? v.duration : 0 };
+  const r = v.getBoundingClientRect();
+  const big = r.width * r.height > innerWidth * innerHeight * 0.85;
+  const o = { url: location.href, title: document.title, time: v.currentTime, duration: isFinite(v.duration) ? v.duration : 0, big };
   const yt = location.href.match(/[?&]v=([\\w-]{11})/);
   if (yt) o.videoId = yt[1];
   const og = document.querySelector('meta[property="og:image"]');
@@ -58,6 +70,8 @@ class Recents {
   // devolve true se mudou algo
   async record(service, snap) {
     if (!snap || snap.time < MIN_WATCH_S) return false;
+    const watching = WATCHING[service.id] || ((x) => x.big);
+    if (!watching(snap)) return false;
     const item = { service: service.id, serviceName: service.name, color: service.color, at: Date.now(), time: Math.round(snap.time), duration: Math.round(snap.duration || 0) };
     if (service.id === 'youtube' && snap.videoId) {
       item.key = 'yt:' + snap.videoId;
