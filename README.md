@@ -2,6 +2,27 @@
 
 Transforma o PC com Windows numa **smart TV**: um launcher em tela cheia, no estilo das interfaces de console, que abre YouTube, Netflix, Prime Video, Disney+ e Jellyfin e que é controlado por **controle de videogame, celular ou voz**.
 
+## Por que o Sofá?
+
+Os launchers de TV para o PC costumam só abrir os programas: depois que a Netflix abre, você volta para o mouse e o teclado. Já as extensões de navegador que dão suporte a controle cobrem **um** serviço por vez e quebram a cada mudança de layout dos sites.
+
+O Sofá junta as duas coisas e vai além: **controla os streamings por dentro, com qualidade máxima**.
+
+| | Launchers de TV | Extensões por serviço | **Sofá** |
+|---|:---:|:---:|:---:|
+| Menu em tela cheia para controle | ✅ | – | ✅ |
+| Navegar **dentro** da Netflix, Prime e Disney+ pelo controle | – | só um serviço | ✅ |
+| YouTube na interface oficial de TV, até **4K60** | – | – | ✅ |
+| Netflix e cia. com DRM em alta resolução | depende do app | – | ✅ (Edge/PlayReady) |
+| Celular como controle remoto, sem instalar app | – | – | ✅ |
+| PC aparece no botão **Transmitir** do YouTube | – | – | ✅ |
+| Comandos de **voz em português**, offline | – | – | ✅ |
+| DualSense por Bluetooth, sem programas extras | parcial | parcial | ✅ |
+| Modo ambiente e zoom para **ultrawide** | – | – | ✅ |
+| "Continuar assistindo" entre serviços | – | – | ✅ |
+
+Em resumo: ligue o PC, pegue o controle (ou o celular) e assista, sem levantar do sofá.
+
 ## Recursos
 
 - **Launcher 10-foot** com navegação por foco, relógio e tela de transmissão quando ocioso.
